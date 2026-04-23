@@ -574,7 +574,8 @@
       overflow: hidden;
     }
 
-    .reel-card video {
+    .reel-card video,
+    .reel-card iframe {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -583,7 +584,8 @@
       transition: filter 0.5s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .reel-card:hover video {
+    .reel-card:hover video,
+    .reel-card:hover iframe {
       filter: brightness(0.9);
       transform: scale(1.03);
     }
@@ -1150,31 +1152,18 @@
   </section>
 
   <!-- FEATURED CINEMATIC -->
-  <!-- Use a YouTube embed URL here (not a watch URL in a <video> tag) -->
+  <!-- Use a local MP4 path here for a clean, unbranded player -->
   <section id="featured">
     <p class="section-label reveal">Featured</p>
     <h2 class="section-title reveal reveal-delay-1">CINEMATIC<br>SHOWCASE</h2>
-    <div class="featured-video-wrap reveal reveal-delay-2" id="featuredVideo" data-youtube-id="iHAbxpJGAMk">
-      <iframe
-        src="about:blank"
-        title="Featured YouTube video"
-        loading="lazy"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="origin"
-        allowfullscreen></iframe>
-      <a href="https://www.youtube.com/watch?v=iHAbxpJGAMk" target="_blank" rel="noopener noreferrer" class="featured-direct-link" id="featuredDirectLink" hidden>
-        Watch on YouTube
-      </a>
+    <div class="featured-video-wrap reveal reveal-delay-2" id="featuredVideo">
+      <video src="Sources/Featured.mp4" muted loop preload="metadata" playsinline></video>
       <div class="featured-overlay">
         <div class="featured-badge">Featured Project</div>
         <div class="featured-title">Built like a Gun</div>
-        <div class="featured-desc">Cinematic video edit — scroll to play.</div>
+        <div class="featured-desc">Cinematic video edit — hover to play.</div>
       </div>
     </div>
-    <p class="featured-fallback-note reveal reveal-delay-3" id="featuredFallback" hidden>
-      If the embed is blocked on shared/local files, watch directly on
-      <a href="https://www.youtube.com/watch?v=iHAbxpJGAMk" target="_blank" rel="noopener noreferrer">YouTube</a>.
-    </p>
   </section>
 
   <!-- REELS -->
@@ -1185,8 +1174,7 @@
 
       <div class="reel-card reveal reveal-delay-1">
         <div class="reel-card-inner">
-          <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" muted loop
-            preload="metadata"></video>
+          <video src="Sources/Reel1.mp4" muted loop preload="metadata" playsinline></video>
           <div class="reel-play">
             <div class="play-icon"></div>
           </div>
@@ -1200,8 +1188,7 @@
 
       <div class="reel-card reveal reveal-delay-2">
         <div class="reel-card-inner">
-          <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" muted loop
-            preload="metadata"></video>
+          <video src="Sources/Reel2.mp4" muted loop preload="metadata" playsinline></video>
           <div class="reel-play">
             <div class="play-icon"></div>
           </div>
@@ -1241,11 +1228,10 @@
         <!-- SLIDE 1: Replace src with your video URL or local file -->
         <div class="cinema-slide active" data-index="0">
           <div class="featured-video-wrap">
-            <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" muted loop
-              preload="metadata"></video>
+            <video src="Sources/Cinematic1.mp4" muted loop preload="metadata" playsinline></video>
             <div class="featured-overlay">
               <div class="featured-badge">01 / Cinematography</div>
-              <div class="featured-title">Cinema Project One</div>
+              <div class="featured-title">Gujarat 🛕</div>
             </div>
           </div>
         </div>
@@ -1335,82 +1321,64 @@
     }, { threshold: 0.15 });
     revealEls.forEach(el => ro.observe(el));
 
-    /* ---- SCROLL-TRIGGERED AUTOPLAY FOR ALL VIDEOS ---- */
-    // This is how pro portfolios do it: IntersectionObserver watches each video,
-    // auto-plays when it scrolls into view, pauses when it scrolls out.
-    const allVideos = document.querySelectorAll('video');
-    const videoObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const vid = entry.target;
-        if (entry.isIntersecting) {
+    /* ---- HOVER-TRIGGERED PLAYBACK ---- */
+    const prefersHoverPlayback = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const postToYoutubePlayer = (frame, func) => {
+      if (!frame || !frame.contentWindow) return;
+      frame.contentWindow.postMessage(JSON.stringify({
+        event: 'command',
+        func,
+        args: []
+      }), '*');
+    };
+
+    const mediaCards = document.querySelectorAll('.reel-card, .cinema-slide, .featured-video-wrap');
+
+    mediaCards.forEach(card => {
+      const vid = card.querySelector('video');
+      const frame = card.querySelector('iframe');
+
+      if (vid && vid.id !== 'modal-video') {
+        vid.pause();
+        card.addEventListener('mouseenter', () => {
+          if (!prefersHoverPlayback) return;
           vid.play().catch(() => { });
-        } else {
+        });
+        card.addEventListener('mouseleave', () => {
           vid.pause();
-        }
-      });
-    }, { threshold: 0.3 });
+          vid.currentTime = 0;
+        });
+      }
 
-    allVideos.forEach(vid => {
-      // Skip the modal video
-      if (vid.id === 'modal-video') return;
-      videoObserver.observe(vid);
+      if (frame) {
+        card.addEventListener('mouseenter', () => {
+          if (!prefersHoverPlayback) return;
+          postToYoutubePlayer(frame, 'playVideo');
+        });
+        card.addEventListener('mouseleave', () => {
+          postToYoutubePlayer(frame, 'pauseVideo');
+        });
+      }
     });
-
-    // Scroll autoplay for featured YouTube iframe
-    const featuredWrap = document.getElementById('featuredVideo');
-    const featuredIframe = featuredWrap ? featuredWrap.querySelector('iframe') : null;
-    const featuredFallback = document.getElementById('featuredFallback');
-    const featuredDirectLink = document.getElementById('featuredDirectLink');
-
-    if (featuredWrap && featuredIframe) {
-      const featuredVideoId = featuredWrap.dataset.youtubeId || '';
-      const isHttpPage = window.location.protocol === 'http:' || window.location.protocol === 'https:';
-      let featuredIframeReady = false;
-
-      if (featuredVideoId && isHttpPage) {
-        const origin = encodeURIComponent(window.location.origin);
-        featuredIframe.src = `https://www.youtube.com/embed/${featuredVideoId}?rel=0&playsinline=1&mute=1&enablejsapi=1&origin=${origin}`;
-      } else {
-        // Local file shares often fail YouTube embed checks (Error 153).
-        featuredIframe.removeAttribute('src');
-        if (featuredFallback) featuredFallback.hidden = false;
-        if (featuredDirectLink) featuredDirectLink.hidden = false;
-      }
-
-      featuredIframe.addEventListener('load', () => {
-        featuredIframeReady = true;
-      });
-
-      const postToFeaturedPlayer = (func) => {
-        if (!featuredIframeReady || !featuredIframe.contentWindow) return;
-        featuredIframe.contentWindow.postMessage(JSON.stringify({
-          event: 'command',
-          func,
-          args: []
-        }), '*');
-      };
-
-      if (isHttpPage) {
-        const featuredObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              postToFeaturedPlayer('playVideo');
-            } else {
-              postToFeaturedPlayer('pauseVideo');
-            }
-          });
-        }, { threshold: 0.45 });
-
-        featuredObserver.observe(featuredWrap);
-      }
-    }
 
     // Click-to-open-modal on cards
     const allVideoCards = document.querySelectorAll('.reel-card, .cinema-slide, .featured-video-wrap');
     allVideoCards.forEach(card => {
       const vid = card.querySelector('video');
-      if (!vid) return;
-      card.addEventListener('click', () => openModal(vid.src));
+      const frame = card.querySelector('iframe');
+
+      if (vid) {
+        card.addEventListener('click', () => openModal(vid.currentSrc || vid.src));
+        return;
+      }
+
+      if (frame) {
+        const externalUrl = card.getAttribute('data-external-url') || frame.src;
+        card.addEventListener('click', () => {
+          window.open(externalUrl, '_blank', 'noopener,noreferrer');
+        });
+      }
     });
 
     /* ---- CINEMATOGRAPHY CAROUSEL ---- */
@@ -1433,15 +1401,21 @@
       const oldVid = slides[currentSlide].querySelector('video');
       if (oldVid) { oldVid.pause(); oldVid.currentTime = 0; }
 
+      const oldFrame = slides[currentSlide].querySelector('iframe');
+      if (oldFrame) postToYoutubePlayer(oldFrame, 'pauseVideo');
+
       slides[currentSlide].classList.remove('active');
       dotsWrap.children[currentSlide].classList.remove('active');
       currentSlide = (idx + slides.length) % slides.length;
       slides[currentSlide].classList.add('active');
       dotsWrap.children[currentSlide].classList.add('active');
 
-      // autoplay new slide's video
+      // Keep new slide paused until hover
       const newVid = slides[currentSlide].querySelector('video');
-      if (newVid) newVid.play().catch(() => { });
+      if (newVid) newVid.pause();
+
+      const newFrame = slides[currentSlide].querySelector('iframe');
+      if (newFrame) postToYoutubePlayer(newFrame, 'pauseVideo');
     }
 
     leftArrow.addEventListener('click', () => goToSlide(currentSlide - 1));
