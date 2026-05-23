@@ -1663,8 +1663,9 @@
     }, { threshold: 0.15 });
     revealEls.forEach(el => ro.observe(el));
 
-    /* ---- HOVER-TRIGGERED PLAYBACK ---- */
+    /* ---- VIDEO PLAYBACK ---- */
     const prefersHoverPlayback = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const mobileVideoAutoplay = window.matchMedia('(max-width: 768px)').matches;
 
     const postToYoutubePlayer = (frame, func) => {
       if (!frame || !frame.contentWindow) return;
@@ -1676,6 +1677,15 @@
     };
 
     const mediaCards = document.querySelectorAll('.reel-card, .cinema-slide, .featured-video-wrap');
+
+    const pauseAllVideos = () => {
+      mediaCards.forEach(card => {
+        const vid = card.querySelector('video');
+        if (!vid || vid.id === 'modal-video') return;
+        vid.pause();
+        vid.currentTime = 0;
+      });
+    };
 
     mediaCards.forEach(card => {
       const vid = card.querySelector('video');
@@ -1703,6 +1713,72 @@
         });
       }
     });
+
+    if (mobileVideoAutoplay) {
+      const mobileVideos = Array.from(document.querySelectorAll('.reel-card video, .featured-video-wrap video, .cinema-slide video'));
+      let mobileScrollRaf = null;
+
+      const pauseOtherMobileVideos = (activeVideo) => {
+        mobileVideos.forEach(video => {
+          if (video === activeVideo || video.id === 'modal-video') return;
+          video.pause();
+          video.currentTime = 0;
+        });
+      };
+
+      const updateMobileVideoPlayback = () => {
+        let selectedVideo = null;
+        let closestDistance = Infinity;
+        const viewportCenter = window.innerHeight * 0.55;
+
+        mobileVideos.forEach(video => {
+          if (video.id === 'modal-video') return;
+          const card = video.closest('.reel-card, .featured-video-wrap, .cinema-slide');
+          if (!card || card.offsetParent === null) return;
+
+          const rect = card.getBoundingClientRect();
+          if (rect.bottom <= 0 || rect.top >= window.innerHeight) return;
+
+          const cardCenter = rect.top + rect.height / 2;
+          const distance = Math.abs(cardCenter - viewportCenter);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            selectedVideo = video;
+          }
+        });
+
+        mobileVideos.forEach(video => {
+          if (video.id === 'modal-video') return;
+          video.muted = true;
+          video.playsInline = true;
+          video.setAttribute('muted', '');
+          video.setAttribute('playsinline', '');
+        });
+
+        if (!selectedVideo) {
+          pauseAllVideos();
+          return;
+        }
+
+        pauseOtherMobileVideos(selectedVideo);
+        selectedVideo.play().catch(() => { });
+      };
+
+      const scheduleMobileVideoUpdate = () => {
+        if (mobileScrollRaf) return;
+        mobileScrollRaf = requestAnimationFrame(() => {
+          mobileScrollRaf = null;
+          updateMobileVideoPlayback();
+        });
+      };
+
+      window.addEventListener('scroll', scheduleMobileVideoUpdate, { passive: true });
+      window.addEventListener('resize', scheduleMobileVideoUpdate);
+      window.addEventListener('orientationchange', scheduleMobileVideoUpdate);
+      window.addEventListener('load', scheduleMobileVideoUpdate);
+      setTimeout(scheduleMobileVideoUpdate, 250);
+    }
 
     // Click-to-open-modal on cards
     const allVideoCards = document.querySelectorAll('.reel-card, .cinema-slide, .featured-video-wrap');
