@@ -145,6 +145,13 @@
       overflow: hidden;
     }
 
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: min(48vw, 760px);
+      pointer-events: none;
+    }
+
     .hero-bg {
       position: absolute;
       inset: 0;
@@ -194,6 +201,69 @@
       line-height: 1.7;
       opacity: 0;
       animation: fadeUp 1s 1s forwards;
+    }
+
+    .hero-media {
+      position: absolute;
+      right: clamp(20px, 5vw, 72px);
+      top: 0;
+      bottom: 0;
+      width: min(48vw, 780px);
+      height: 100%;
+      overflow: hidden;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(30px);
+      filter: blur(8px);
+    }
+
+    .hero-media.is-ready {
+      animation: fadeBlurUp 1s 0.45s forwards;
+    }
+
+    .hero-media::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to left, rgba(8, 8, 8, 0.58) 0%, rgba(8, 8, 8, 0.05) 26%, rgba(8, 8, 8, 0) 42%),
+        linear-gradient(to top, rgba(8, 8, 8, 0.42) 0%, rgba(8, 8, 8, 0.05) 45%, rgba(8, 8, 8, 0.32) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 30%, rgba(232, 213, 163, 0.08) 0%, rgba(232, 213, 163, 0) 45%);
+      mix-blend-mode: screen;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: saturate(0.96) contrast(1.08) brightness(0.86);
+      transform: scale(1.04);
+    }
+
+    @keyframes fadeBlurUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+        filter: blur(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
     }
 
     .hero-scroll {
@@ -1060,6 +1130,49 @@
         min-height: 100svh;
         height: auto;
         padding: 92px 16px 56px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .hero-content {
+        display: contents;
+      }
+
+      .hero-line {
+        order: 1;
+        margin-bottom: 22px;
+      }
+
+      .hero-tag {
+        order: 2;
+        margin-bottom: 14px;
+      }
+
+      .hero-media {
+        order: 3;
+        position: relative;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        width: 100%;
+        height: clamp(360px, 58vh, 520px);
+        margin-top: 0;
+        margin-bottom: 18px;
+        border-top: 1px solid rgba(232, 213, 163, 0.16);
+      }
+
+      .hero-title {
+        order: 4;
+        margin-top: 10px;
+      }
+
+      .hero-sub {
+        order: 5;
+        margin-top: 14px;
+      }
+
+      .hero-scroll {
+        display: none;
       }
 
       .hero-line {
@@ -1313,11 +1426,18 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-bg"></div>
-    <div class="hero-line"></div>
-    <p class="hero-tag">Video Editor &nbsp;/&nbsp; VideoGrapher &nbsp;/&nbsp; Storyteller</p>
-    <h1 class="hero-title">BHARATH<br><span>AE</span></h1>
-    <p class="hero-sub">Crafting cinematic stories through the art of the edit — colour, motion, and rhythm in every
-      frame.</p>
+    <div class="hero-content">
+      <div class="hero-line"></div>
+      <p class="hero-tag">Video Editor &nbsp;/&nbsp; VideoGrapher &nbsp;/&nbsp; Storyteller</p>
+      <h1 class="hero-title">BHARATH<br><span>AE</span></h1>
+      <p class="hero-sub">Crafting cinematic stories through the art of the edit — colour, motion, and rhythm in every
+        frame.</p>
+    </div>
+
+    <div class="hero-media" id="heroMedia" aria-hidden="true">
+      <img class="hero-photo" id="heroPhoto" src="" alt="Portrait of Bharath">
+    </div>
+
     <div class="hero-scroll">
       <span>Scroll</span>
       <div class="scroll-track">
@@ -1678,6 +1798,54 @@
       lastY = y;
     }, { passive: true });
     nav.style.transition = 'opacity .4s, transform .4s';
+
+    /* ---- HERO PARALLAX ---- */
+    const hero = document.getElementById('hero');
+    const heroMedia = document.getElementById('heroMedia');
+    const supportsFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    /* ---- HERO PORTRAIT SOURCE RESOLVE ---- */
+    const heroPhoto = document.getElementById('heroPhoto');
+    const heroCandidates = [
+      'web.png',
+      'web.jpg',
+      'web.jpeg',
+      'web.webp',
+      'Sources/web.png',
+      'Sources/web.jpg'
+    ];
+
+    function loadFirstAvailableImage(candidates, onSuccess, onFail) {
+      let idx = 0;
+      const probe = new Image();
+
+      function tryNext() {
+        if (idx >= candidates.length) {
+          onFail();
+          return;
+        }
+        const src = candidates[idx++];
+        probe.onload = () => onSuccess(src);
+        probe.onerror = tryNext;
+        probe.src = src;
+      }
+
+      tryNext();
+    }
+
+    if (heroMedia && heroPhoto) {
+      loadFirstAvailableImage(
+        heroCandidates,
+        (src) => {
+          heroPhoto.src = src;
+          heroMedia.classList.add('is-ready');
+          heroMedia.setAttribute('aria-hidden', 'false');
+        },
+        () => {
+          heroMedia.style.display = 'none';
+        }
+      );
+    }
   </script>
 </body>
 
