@@ -754,6 +754,25 @@
       max-width: 500px;
     }
 
+    .featured-carousel {
+      position: relative;
+    }
+
+    .featured-carousel-track {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .featured-slide {
+      display: none;
+      animation: cineFadeIn 0.6s ease;
+    }
+
+    .featured-slide.active {
+      display: block;
+    }
+
     .featured-fallback-note {
       margin-top: 14px;
       font-size: 12px;
@@ -1699,13 +1718,43 @@
   <section id="featured">
     <p class="section-label reveal">Featured</p>
     <h2 class="section-title reveal reveal-delay-1">CINEMATIC<br>SHOWCASE</h2>
-    <div class="featured-video-wrap reveal reveal-delay-2" id="featuredVideo">
-      <video src="Sources/Featured.mp4" muted loop preload="metadata" playsinline></video>
-      <div class="featured-overlay">
-        <div class="featured-badge">Featured Project</div>
-        <div class="featured-title">Built like a Gun</div>
-        <div class="featured-desc">Cinematic video edit — hover to play.</div>
+    <div class="featured-carousel reveal reveal-delay-2" id="featuredCarousel">
+      <div class="featured-carousel-track">
+        <div class="featured-slide active" data-index="0">
+          <div class="featured-video-wrap" id="featuredVideo">
+            <video src="Sources/Featured.mp4" muted loop preload="metadata" playsinline></video>
+            <div class="featured-overlay">
+              <div class="featured-badge">Featured Project</div>
+              <div class="featured-title">Built like a Gun</div>
+              <div class="featured-desc">Cinematic video edit — hover to play.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="featured-slide" data-index="1">
+          <div class="featured-video-wrap">
+            <video src="Sources/Cinematic2.mp4" muted loop preload="metadata" playsinline></video>
+            <div class="featured-overlay">
+              <div class="featured-badge">Featured Project</div>
+              <div class="featured-title">Cinematic Two</div>
+              <div class="featured-desc">Second featured cut — swipe or use the arrows.</div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <button class="cinema-arrow cinema-arrow-left" id="featuredLeft" aria-label="Previous featured project">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+      <button class="cinema-arrow cinema-arrow-right" id="featuredRight" aria-label="Next featured project">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 6 15 12 9 18" />
+        </svg>
+      </button>
+
+      <div class="cinema-dots" id="featuredDots"></div>
     </div>
   </section>
 
@@ -2104,6 +2153,46 @@
 
     leftArrow.addEventListener('click', () => goToSlide(currentSlide - 1));
     rightArrow.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+    /* ---- FEATURED CAROUSEL ---- */
+    const featuredSlides = document.querySelectorAll('.featured-slide');
+    const featuredDots = document.getElementById('featuredDots');
+    const featuredLeft = document.getElementById('featuredLeft');
+    const featuredRight = document.getElementById('featuredRight');
+    let currentFeaturedSlide = 0;
+
+    featuredSlides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'cinema-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goToFeaturedSlide(i));
+      featuredDots.appendChild(dot);
+    });
+
+    function goToFeaturedSlide(idx) {
+      const oldVid = featuredSlides[currentFeaturedSlide].querySelector('video');
+      if (oldVid) {
+        oldVid.pause();
+        oldVid.currentTime = 0;
+      }
+
+      const oldFrame = featuredSlides[currentFeaturedSlide].querySelector('iframe');
+      if (oldFrame) postToYoutubePlayer(oldFrame, 'pauseVideo');
+
+      featuredSlides[currentFeaturedSlide].classList.remove('active');
+      featuredDots.children[currentFeaturedSlide].classList.remove('active');
+      currentFeaturedSlide = (idx + featuredSlides.length) % featuredSlides.length;
+      featuredSlides[currentFeaturedSlide].classList.add('active');
+      featuredDots.children[currentFeaturedSlide].classList.add('active');
+
+      const newVid = featuredSlides[currentFeaturedSlide].querySelector('video');
+      if (newVid) newVid.pause();
+
+      const newFrame = featuredSlides[currentFeaturedSlide].querySelector('iframe');
+      if (newFrame) postToYoutubePlayer(newFrame, 'pauseVideo');
+    }
+
+    featuredLeft.addEventListener('click', () => goToFeaturedSlide(currentFeaturedSlide - 1));
+    featuredRight.addEventListener('click', () => goToFeaturedSlide(currentFeaturedSlide + 1));
 
     // Keyboard arrow support
     document.addEventListener('keydown', e => {
