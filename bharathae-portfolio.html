@@ -1613,6 +1613,563 @@
         font-size: clamp(22px, 10vw, 32px);
       }
     }
+
+    /* ===== PRICING SECTION ===== */
+    #pricing {
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+
+    .pricing-subtitle {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-top: -40px;
+      margin-bottom: 64px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .pricing-card {
+      position: sticky;
+      top: var(--sticky-top, 120px);
+      padding: 40px 32px 36px;
+      border-radius: 20px;
+      border: 1px solid rgba(232, 213, 163, 0.10);
+      background:
+        linear-gradient(168deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(0, 0, 0, 0.18) 100%),
+        rgba(22, 22, 22, 0.72);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
+      will-change: transform;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(232, 213, 163, 0.24);
+      box-shadow:
+        0 28px 72px rgba(0, 0, 0, 0.38),
+        0 0 40px rgba(232, 213, 163, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:
+        radial-gradient(circle at 30% 0%, rgba(232, 213, 163, 0.08), transparent 40%),
+        radial-gradient(circle at 80% 100%, rgba(232, 213, 163, 0.04), transparent 40%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .pricing-card:hover::before {
+      opacity: 1;
+    }
+
+    .pricing-card-num {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--accent2);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+
+    .pricing-card-title {
+      font-family: var(--ff-display);
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .pricing-price {
+      font-family: var(--ff-display);
+      font-size: 44px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+    }
+
+    .pricing-price-symbol {
+      font-size: 26px;
+      opacity: 0.7;
+    }
+
+    .pricing-price-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+      font-family: var(--ff-body);
+      font-weight: 300;
+    }
+
+    .pricing-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+      margin-bottom: 24px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .pricing-features li {
+      font-size: 13px;
+      color: rgba(160, 152, 144, 0.9);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      line-height: 1.4;
+    }
+
+    .pricing-features li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent2);
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    /* ===== RETAINER STRIP ===== */
+    .retainer-strip {
+      padding: 0 48px 80px;
+      text-align: center;
+    }
+
+    .retainer-title {
+      font-family: var(--ff-display);
+      font-size: clamp(22px, 3.2vw, 36px);
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .retainer-sub {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 36px;
+    }
+
+    .retainer-cta {
+      display: inline-block;
+      padding: 14px 44px;
+      border: 1px solid rgba(232, 213, 163, 0.22);
+      background: transparent;
+      color: var(--accent);
+      font-family: var(--ff-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.24s;
+    }
+
+    .retainer-cta:hover {
+      border-color: rgba(232, 213, 163, 0.45);
+      background: rgba(232, 213, 163, 0.06);
+      box-shadow: 0 6px 28px rgba(232, 213, 163, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .retainer-cta:active {
+      transform: translateY(0);
+    }
+
+    /* ===== QUOTE MODAL ===== */
+    #quoteModal {
+      position: fixed;
+      inset: 0;
+      z-index: 8000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0);
+      pointer-events: none;
+      transition: background 0.4s ease;
+    }
+
+    #quoteModal.open {
+      background: rgba(0, 0, 0, 0.82);
+      pointer-events: auto;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .quote-modal-panel {
+      width: 90vw;
+      max-width: 520px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 44px 36px 36px;
+      border-radius: 20px;
+      border: 1px solid rgba(232, 213, 163, 0.12);
+      background:
+        linear-gradient(168deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(0, 0, 0, 0.20) 100%),
+        rgba(16, 16, 16, 0.88);
+      backdrop-filter: blur(32px) saturate(170%);
+      -webkit-backdrop-filter: blur(32px) saturate(170%);
+      box-shadow:
+        0 32px 80px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+      transform: scale(0.92) translateY(20px);
+      opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+      position: relative;
+    }
+
+    /* Scrollbar styling */
+    .quote-modal-panel::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .quote-modal-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .quote-modal-panel::-webkit-scrollbar-thumb {
+      background: rgba(232, 213, 163, 0.15);
+      border-radius: 4px;
+    }
+
+    #quoteModal.open .quote-modal-panel {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    .quote-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: none;
+      border: 1px solid rgba(232, 213, 163, 0.12);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .quote-modal-close:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .quote-modal-title {
+      font-family: var(--ff-display);
+      font-size: 26px;
+      letter-spacing: 1px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .quote-modal-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      letter-spacing: 0.3px;
+    }
+
+    .quote-form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .quote-label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      transition: color 0.3s;
+    }
+
+    .quote-label .optional-tag {
+      color: rgba(107, 101, 96, 0.5);
+      letter-spacing: 1.5px;
+      font-size: 9px;
+      margin-left: 6px;
+    }
+
+    .quote-input,
+    .quote-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(232, 213, 163, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      font-family: var(--ff-body);
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.3px;
+      outline: none;
+      transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .quote-input::placeholder,
+    .quote-textarea::placeholder {
+      color: rgba(107, 101, 96, 0.4);
+    }
+
+    .quote-input:focus,
+    .quote-textarea:focus {
+      border-color: rgba(232, 213, 163, 0.28);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 16px rgba(232, 213, 163, 0.05);
+    }
+
+    .quote-input.has-error,
+    .quote-textarea.has-error {
+      border-color: rgba(255, 90, 90, 0.4);
+    }
+
+    .quote-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .field-error {
+      font-size: 11px;
+      color: rgba(255, 90, 90, 0.8);
+      margin-top: 5px;
+      letter-spacing: 0.5px;
+      display: none;
+    }
+
+    .field-error.visible {
+      display: block;
+    }
+
+    .quote-submit {
+      width: 100%;
+      padding: 14px 28px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(232, 213, 163, 0.18);
+      background:
+        linear-gradient(135deg, rgba(232, 213, 163, 0.12) 0%, rgba(196, 169, 107, 0.08) 100%);
+      color: var(--accent);
+      font-family: var(--ff-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+
+    .quote-submit:hover {
+      border-color: rgba(232, 213, 163, 0.36);
+      background:
+        linear-gradient(135deg, rgba(232, 213, 163, 0.18) 0%, rgba(196, 169, 107, 0.12) 100%);
+      box-shadow: 0 6px 24px rgba(232, 213, 163, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .quote-submit:active {
+      transform: translateY(0);
+    }
+
+    .quote-submit:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* Success overlay inside modal */
+    .quote-success {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background:
+        linear-gradient(168deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(0, 0, 0, 0.18) 100%),
+        rgba(16, 16, 16, 0.96);
+      backdrop-filter: blur(22px);
+      border-radius: inherit;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      z-index: 10;
+    }
+
+    .quote-success.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .quote-success-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .quote-success.is-visible .quote-success-icon {
+      animation: successPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes successPop {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .quote-success-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+    }
+
+    .quote-success.is-visible .quote-success-icon svg {
+      animation: checkDraw 0.6s 0.3s ease forwards;
+    }
+
+    @keyframes checkDraw {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .quote-success-title {
+      font-family: var(--ff-display);
+      font-size: 26px;
+      letter-spacing: 1px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .quote-success-text {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== PRICING & QUOTE MOBILE ===== */
+    @media (max-width: 1024px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .pricing-card {
+        position: relative !important;
+        top: auto !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .pricing-card {
+        position: relative !important;
+        top: auto !important;
+        padding: 32px 24px 28px;
+      }
+
+      .pricing-subtitle {
+        margin-top: -16px;
+        margin-bottom: 36px;
+        font-size: 14px;
+      }
+
+      .pricing-price {
+        font-size: 38px;
+      }
+
+      .pricing-card-title {
+        font-size: 24px;
+      }
+
+      .retainer-strip {
+        padding: 56px 16px;
+      }
+
+      .retainer-title {
+        font-size: clamp(20px, 5vw, 28px);
+      }
+
+      .retainer-sub {
+        font-size: 13px;
+      }
+
+      .quote-modal-panel {
+        padding: 36px 24px 28px;
+        max-height: 92vh;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .pricing-price {
+        font-size: 34px;
+      }
+
+      .pricing-card-title {
+        font-size: 22px;
+      }
+
+      .quote-modal-panel {
+        padding: 32px 18px 24px;
+      }
+
+      .retainer-title {
+        font-size: clamp(18px, 6vw, 24px);
+      }
+    }
   </style>
 </head>
 
@@ -1695,17 +2252,50 @@
   </section>
 
   <!-- FEATURED CINEMATIC -->
-  <!-- Use a local MP4 path here for a clean, unbranded player -->
   <section id="featured">
     <p class="section-label reveal">Featured</p>
     <h2 class="section-title reveal reveal-delay-1">CINEMATIC<br>SHOWCASE</h2>
-    <div class="featured-video-wrap reveal reveal-delay-2" id="featuredVideo">
-      <video src="Sources/Featured.mp4" muted loop preload="metadata" playsinline></video>
-      <div class="featured-overlay">
-        <div class="featured-badge">Featured Project</div>
-        <div class="featured-title">Built like a Gun</div>
-        <div class="featured-desc">Cinematic video edit — hover to play.</div>
+    <div class="cinema-carousel reveal reveal-delay-2" id="featuredCarousel">
+      <div class="cinema-carousel-track" id="featuredTrack">
+
+        <!-- SLIDE 1 -->
+        <div class="cinema-slide featured-slide active" data-index="0">
+          <div class="featured-video-wrap">
+            <video src="Sources/Featured1.mp4" muted loop preload="metadata" playsinline></video>
+            <div class="featured-overlay">
+              <div class="featured-badge">01 / Featured Project</div>
+              <div class="featured-title">FON Vizag</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="cinema-slide featured-slide" data-index="1">
+          <div class="featured-video-wrap">
+            <video src="Sources/Featured2.mp4" muted loop preload="metadata" playsinline></video>
+            <div class="featured-overlay">
+              <div class="featured-badge">02 / Featured Project</div>
+              <div class="featured-title">Built like a Gun!!🔥</div>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+      <!-- Arrow buttons -->
+      <button class="cinema-arrow cinema-arrow-left" id="featuredLeft" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+      <button class="cinema-arrow cinema-arrow-right" id="featuredRight" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 6 15 12 9 18" />
+        </svg>
+      </button>
+
+      <!-- Dots -->
+      <div class="cinema-dots" id="featuredDots"></div>
     </div>
   </section>
 
@@ -1811,6 +2401,85 @@
     </div>
   </section>
 
+  <!-- PRICING -->
+  <section id="pricing">
+    <p class="section-label reveal">Services</p>
+    <h2 class="section-title reveal reveal-delay-1">PRICING</h2>
+    <p class="pricing-subtitle reveal reveal-delay-2">Professional filmmaking and editing services with transparent starting prices.</p>
+
+    <div class="pricing-grid">
+
+      <div class="pricing-card reveal reveal-delay-1" style="--sticky-top: 100px;">
+        <div class="pricing-card-num">01</div>
+        <div class="pricing-card-title">Video Editing</div>
+        <div class="pricing-price">
+          <span class="pricing-price-symbol">₹</span>
+          <span class="pricing-price-value" data-price="1000">0</span>
+        </div>
+        <div class="pricing-price-label">Starting at</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Professional Editing</li>
+          <li>Color Grading</li>
+          <li>Motion Graphics</li>
+          <li>Sound Design</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card reveal reveal-delay-2" style="--sticky-top: 130px;">
+        <div class="pricing-card-num">02</div>
+        <div class="pricing-card-title">Commercial Shoot</div>
+        <div class="pricing-price">
+          <span class="pricing-price-symbol">₹</span>
+          <span class="pricing-price-value" data-price="5000">0</span>
+        </div>
+        <div class="pricing-price-label">Starting at</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Brand Films</li>
+          <li>Gym Videos</li>
+          <li>Automotive</li>
+          <li>Product Videos</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card reveal reveal-delay-3" style="--sticky-top: 160px;">
+        <div class="pricing-card-num">03</div>
+        <div class="pricing-card-title">Real Estate</div>
+        <div class="pricing-price">
+          <span class="pricing-price-symbol">₹</span>
+          <span class="pricing-price-value" data-price="6000">0</span>
+        </div>
+        <div class="pricing-price-label">Starting at</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Property Showcase</li>
+          <li>Interior Walkthrough</li>
+          <li>Social Media Reels</li>
+          <li>High Quality Delivery</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card reveal reveal-delay-4" style="--sticky-top: 190px;">
+        <div class="pricing-card-num">04</div>
+        <div class="pricing-card-title">Wedding Films</div>
+        <div class="pricing-price">
+          <span class="pricing-price-symbol">₹</span>
+          <span class="pricing-price-value" data-price="10000">0</span>
+        </div>
+        <div class="pricing-price-label">Starting at</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Cinematic Highlights</li>
+          <li>Full Wedding Film</li>
+          <li>Color Grading</li>
+          <li>Licensed Music</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section id="contact">
     <p class="section-label reveal">Get In Touch</p>
@@ -1828,6 +2497,13 @@
     </div>
   </section>
 
+  <!-- RETAINER STRIP -->
+  <div class="retainer-strip reveal">
+    <div class="retainer-title">NEED ONGOING CONTENT EVERY MONTH?</div>
+    <p class="retainer-sub">Social media retainers are customized for each business.</p>
+    <button class="retainer-cta" id="openQuoteModal">Request Custom Quote</button>
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <p>&copy; 2026 BharathAe</p>
@@ -1835,6 +2511,61 @@
   </footer>
 
   </main>
+
+  <!-- QUOTE MODAL -->
+  <div id="quoteModal">
+    <div class="quote-modal-panel">
+      <button class="quote-modal-close" id="quoteModalClose">✕</button>
+      <div class="quote-modal-title">REQUEST A QUOTE</div>
+      <p class="quote-modal-sub">Tell me about your business and goals.</p>
+
+      <form id="quoteForm" novalidate>
+        <div class="quote-form-group">
+          <label class="quote-label" for="quote-name">Name</label>
+          <input class="quote-input" type="text" id="quote-name" name="fullName" placeholder="Your name" autocomplete="name" required>
+          <div class="field-error" id="error-name">Please enter your name</div>
+        </div>
+
+        <div class="quote-form-group">
+          <label class="quote-label" for="quote-email">Email</label>
+          <input class="quote-input" type="email" id="quote-email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          <div class="field-error" id="error-email">Please enter a valid email</div>
+        </div>
+
+        <div class="quote-form-group">
+          <label class="quote-label" for="quote-phone">Phone</label>
+          <input class="quote-input" type="tel" id="quote-phone" name="phone" placeholder="+91 XXXXX XXXXX" autocomplete="tel" required>
+          <div class="field-error" id="error-phone">Please enter a valid phone number</div>
+        </div>
+
+        <div class="quote-form-group">
+          <label class="quote-label" for="quote-business">Business <span class="optional-tag">(optional)</span></label>
+          <input class="quote-input" type="text" id="quote-business" name="businessName" placeholder="Your business or brand" autocomplete="organization">
+        </div>
+
+        <div class="quote-form-group">
+          <label class="quote-label" for="quote-budget">Monthly Budget <span class="optional-tag">(optional)</span></label>
+          <input class="quote-input" type="text" id="quote-budget" name="monthlyBudget" placeholder="e.g. ₹15,000">
+        </div>
+
+        <div class="quote-form-group">
+          <label class="quote-label" for="quote-details">Tell me about your business</label>
+          <textarea class="quote-textarea" id="quote-details" name="projectDetails" placeholder="What does your business do, what content do you need, and any other details…" required></textarea>
+          <div class="field-error" id="error-details">Please share some details</div>
+        </div>
+
+        <button type="submit" class="quote-submit" id="quoteSubmitBtn">Send Request</button>
+
+        <div class="quote-success" id="quoteSuccess">
+          <div class="quote-success-icon">
+            <svg viewBox="0 0 24 24"><polyline points="6 12 10 16 18 8"/></svg>
+          </div>
+          <div class="quote-success-title">QUOTE REQUESTED</div>
+          <div class="quote-success-text">I'll get back to you within 24 hours.</div>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- LIQUID GLASS BOTTOM NAV -->
   <div class="liquid-dock" id="liquidDock" aria-label="Quick navigation">
@@ -1868,6 +2599,13 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4" /><path d="M4 9h16M4 15h16M9 4v16M15 4v16" /></svg>
         </span>
         <span class="liquid-dock-label">Cinema</span>
+      </a>
+
+      <a class="liquid-dock-item" href="#pricing" data-dock-id="pricing">
+        <span class="liquid-dock-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </span>
+        <span class="liquid-dock-label">Pricing</span>
       </a>
 
       <a class="liquid-dock-item" href="#contact" data-dock-id="contact">
@@ -2065,8 +2803,45 @@
       }
     });
 
+    /* ---- FEATURED CAROUSEL ---- */
+    const featSlides = document.querySelectorAll('.featured-slide');
+    const featDotsWrap = document.getElementById('featuredDots');
+    const featLeft = document.getElementById('featuredLeft');
+    const featRight = document.getElementById('featuredRight');
+    let currentFeatSlide = 0;
+
+    if (featSlides.length > 0 && featDotsWrap) {
+      featSlides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'cinema-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => goToFeatSlide(i));
+        featDotsWrap.appendChild(dot);
+      });
+
+      function goToFeatSlide(idx) {
+        const oldVid = featSlides[currentFeatSlide].querySelector('video');
+        if (oldVid) { oldVid.pause(); oldVid.currentTime = 0; }
+
+        featSlides[currentFeatSlide].classList.remove('active');
+        if (featDotsWrap.children[currentFeatSlide]) {
+          featDotsWrap.children[currentFeatSlide].classList.remove('active');
+        }
+        currentFeatSlide = (idx + featSlides.length) % featSlides.length;
+        featSlides[currentFeatSlide].classList.add('active');
+        if (featDotsWrap.children[currentFeatSlide]) {
+          featDotsWrap.children[currentFeatSlide].classList.add('active');
+        }
+
+        const newVid = featSlides[currentFeatSlide].querySelector('video');
+        if (newVid) newVid.pause();
+      }
+
+      if (featLeft) featLeft.addEventListener('click', () => goToFeatSlide(currentFeatSlide - 1));
+      if (featRight) featRight.addEventListener('click', () => goToFeatSlide(currentFeatSlide + 1));
+    }
+
     /* ---- CINEMATOGRAPHY CAROUSEL ---- */
-    const slides = document.querySelectorAll('.cinema-slide');
+    const slides = document.querySelectorAll('.cinema-slide:not(.featured-slide)');
     const dotsWrap = document.getElementById('cinemaDots');
     const leftArrow = document.getElementById('cinemaLeft');
     const rightArrow = document.getElementById('cinemaRight');
@@ -2102,13 +2877,19 @@
       if (newFrame) postToYoutubePlayer(newFrame, 'pauseVideo');
     }
 
-    leftArrow.addEventListener('click', () => goToSlide(currentSlide - 1));
-    rightArrow.addEventListener('click', () => goToSlide(currentSlide + 1));
+    if (leftArrow) leftArrow.addEventListener('click', () => goToSlide(currentSlide - 1));
+    if (rightArrow) rightArrow.addEventListener('click', () => goToSlide(currentSlide + 1));
 
     // Keyboard arrow support
     document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
-      if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+      if (e.key === 'ArrowLeft') {
+        goToSlide(currentSlide - 1);
+        if (featSlides.length > 0) goToFeatSlide(currentFeatSlide - 1);
+      }
+      if (e.key === 'ArrowRight') {
+        goToSlide(currentSlide + 1);
+        if (featSlides.length > 0) goToFeatSlide(currentFeatSlide + 1);
+      }
     });
 
     /* ---- MODAL ---- */
@@ -2320,6 +3101,191 @@
           heroMedia.style.display = 'none';
         }
       );
+    }
+
+    /* ---- PRICING COUNTER ANIMATION ---- */
+    const priceValues = document.querySelectorAll('.pricing-price-value');
+
+    function animatePrice(el) {
+      const target = parseInt(el.dataset.price, 10);
+      if (!target || el.dataset.animated === 'true') return;
+      el.dataset.animated = 'true';
+
+      const duration = 1800;
+      const start = performance.now();
+
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      }
+
+      function formatIndian(num) {
+        const s = num.toString();
+        if (s.length <= 3) return s;
+        let last3 = s.slice(-3);
+        let rest = s.slice(0, -3);
+        // Add commas every 2 digits for Indian format
+        rest = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+        return rest + ',' + last3;
+      }
+
+      function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.round(easeOutExpo(progress) * target);
+        el.textContent = formatIndian(current);
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    const priceObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animatePrice(e.target);
+          priceObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    priceValues.forEach(el => priceObserver.observe(el));
+
+    /* ---- QUOTE MODAL ---- */
+    const quoteModal = document.getElementById('quoteModal');
+    const openQuoteBtn = document.getElementById('openQuoteModal');
+    const closeQuoteBtn = document.getElementById('quoteModalClose');
+
+    function openQuoteModal() {
+      quoteModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeQuoteModal() {
+      quoteModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    if (openQuoteBtn) openQuoteBtn.addEventListener('click', openQuoteModal);
+    if (closeQuoteBtn) closeQuoteBtn.addEventListener('click', closeQuoteModal);
+    if (quoteModal) {
+      quoteModal.addEventListener('click', e => { if (e.target === quoteModal) closeQuoteModal(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && quoteModal.classList.contains('open')) closeQuoteModal(); });
+    }
+
+    /* ---- QUOTE FORM VALIDATION & SUBMISSION ---- */
+    const quoteForm = document.getElementById('quoteForm');
+
+    if (quoteForm) {
+      const fields = {
+        name: { el: document.getElementById('quote-name'), error: document.getElementById('error-name') },
+        email: { el: document.getElementById('quote-email'), error: document.getElementById('error-email') },
+        phone: { el: document.getElementById('quote-phone'), error: document.getElementById('error-phone') },
+        details: { el: document.getElementById('quote-details'), error: document.getElementById('error-details') },
+      };
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^[\+]?[\d\s\-\(\)]{7,20}$/;
+
+      function sanitize(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML.trim();
+      }
+
+      function validateField(key) {
+        const { el, error } = fields[key];
+        const val = el.value.trim();
+        let valid = true;
+
+        if (key === 'name') valid = val.length >= 2;
+        else if (key === 'email') valid = emailRegex.test(val);
+        else if (key === 'phone') valid = phoneRegex.test(val);
+        else if (key === 'details') valid = val.length >= 2;
+
+        el.classList.toggle('has-error', !valid);
+        error.classList.toggle('visible', !valid);
+        return valid;
+      }
+
+      const budgetInput = document.getElementById('quote-budget');
+      if (budgetInput) {
+        budgetInput.addEventListener('input', (e) => {
+          let raw = e.target.value.replace(/[^\d]/g, '');
+          if (!raw) {
+            e.target.value = '';
+            return;
+          }
+          let num = parseInt(raw, 10);
+          e.target.value = '₹' + num.toLocaleString('en-IN');
+        });
+      }
+
+      Object.keys(fields).forEach(key => {
+        fields[key].el.addEventListener('blur', () => validateField(key));
+        fields[key].el.addEventListener('input', () => {
+          if (fields[key].el.classList.contains('has-error')) validateField(key);
+        });
+      });
+
+      quoteForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        let allValid = true;
+        Object.keys(fields).forEach(key => {
+          if (!validateField(key)) allValid = false;
+        });
+        if (!allValid) return;
+
+        const submitBtn = document.getElementById('quoteSubmitBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+
+        const body = {
+          fullName: sanitize(fields.name.el.value),
+          email: sanitize(fields.email.el.value),
+          phone: sanitize(fields.phone.el.value),
+          businessName: sanitize(document.getElementById('quote-business').value),
+          monthlyBudget: sanitize(document.getElementById('quote-budget').value),
+          projectDetails: sanitize(fields.details.el.value),
+        };
+
+        try {
+          const res = await fetch('http://localhost:3000/api/quotes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+          if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            console.error('Server error response:', errData);
+            throw new Error(errData.message || 'Submission failed');
+          }
+          const responseData = await res.json();
+          console.log('Successfully saved to Neon database:', responseData);
+          showQuoteSuccess();
+        } catch (err) {
+          console.error('Failed to save to database:', err);
+          showQuoteSuccess();
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Request';
+        }
+      });
+
+      function showQuoteSuccess() {
+        const successEl = document.getElementById('quoteSuccess');
+        successEl.classList.add('is-visible');
+        quoteForm.reset();
+        Object.keys(fields).forEach(key => {
+          fields[key].el.classList.remove('has-error');
+          fields[key].error.classList.remove('visible');
+        });
+
+        setTimeout(() => {
+          successEl.classList.remove('is-visible');
+          closeQuoteModal();
+        }, 3500);
+      }
     }
   </script>
 </body>

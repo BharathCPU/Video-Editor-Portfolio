@@ -1,0 +1,17 @@
+# Environment variables & secrets
+.env
+*.env
+server/.env
+
+# Node modules & dependencies
+node_modules/
+server/node_modules/
+
+# OS / IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Review / Temp outputs
+review-screenshots/

@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model QuoteRequest {
+  id             Int      @id @default(autoincrement())
+  fullName       String   @db.VarChar(200)
+  email          String   @db.VarChar(320)
+  phone          String   @db.VarChar(30)
+  businessName   String?  @db.VarChar(200)
+  monthlyBudget  String?  @db.VarChar(100)
+  projectDetails String   @db.Text
+  createdAt      DateTime @default(now())
+}
