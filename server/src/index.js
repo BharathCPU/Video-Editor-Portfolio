@@ -11,24 +11,13 @@ const PORT = process.env.PORT || 3000;
 
 /* ---- GLOBAL MIDDLEWARE ---- */
 
-// CORS — must come BEFORE helmet so preflight responses include the right headers
-const corsOptions = {
-  origin: [
-    'https://bharathcpu.github.io',
-    'http://localhost:3000',
-    'http://127.0.0.1:5500',
-    'null', // file:// origins
-  ],
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-  credentials: false,
-};
-app.use(cors(corsOptions));
-// Handle preflight OPTIONS requests for all routes
-app.options('*', cors(corsOptions));
+// CORS — open to all origins (pure JSON API, no browser resources served)
+app.use(cors());
+app.options('*', cors());
 
-// Security headers (after CORS so it doesn't strip CORS headers)
-app.use(helmet());
+// Security headers — disable CSP since this is an API-only server (no HTML served)
+app.use(helmet({ contentSecurityPolicy: false }));
+
 
 // Parse JSON bodies (limit payload size to prevent abuse)
 app.use(express.json({ limit: '16kb' }));
